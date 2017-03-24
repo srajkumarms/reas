@@ -1,0 +1,25 @@
+{
+  "name": "reas",
+  "description": "A sample NodeJS application",
+  "main": "index.js",
+  "authors": [
+    "RS"
+  ],
+  "license": "UNLICENSED",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.3",
+    "angular-resource": "^1.6.3",
+    "angular-cookies": "^1.6.3",
+    "angular-animate": "^1.6.3",
+    "angular-sanitize": "^1.6.3",
+    "angular-route": "^1.6.3"
+  }
+}

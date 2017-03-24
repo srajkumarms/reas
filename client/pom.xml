@@ -1,0 +1,184 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.home.app</groupId>
+	<artifactId>reas-client</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<packaging>war</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<output.dir>dist</output.dir>
+		<gruntTask>prepare</gruntTask>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile.id>local</profile.id>
+			</properties>
+		</profile>
+
+		<profile>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<command.extension>.cmd</command.extension>
+			</properties>
+		</profile>
+
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>1.validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo>Performing validate. Intentionally left to accommodate future validate requirement</echo>
+								<echo>Building on profile ==> '${profile.id}'</echo>
+							</target>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>2.initialize</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo>Performing initialize</echo>
+								<echo>Creating ${output.dir}, node_modules, webapp, bower_components, assets directories if not exists</echo>
+								<mkdir dir="${output.dir}" />
+								<mkdir dir="${output.dir}/node_modules" />
+								<mkdir dir="${output.dir}/webapp" />
+								<mkdir dir="${output.dir}/webapp/bower_components" />
+								<mkdir dir="${output.dir}/webapp/assets" />
+								<mkdir dir="${output.dir}/webapp/assets/fonts/" />
+							</target>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>3.sync sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<sync todir="${output.dir}">
+									<fileset dir="src/main/">
+										<exclude name="node_modules/**"></exclude>
+										<exclude name="webapp/bower_components/**"></exclude>
+									</fileset>
+									<preserveintarget>
+										<include name="node" />
+										<include name="node/**" />
+										<include name="node_modules" />
+										<include name="node_modules/**" />
+										<include name="webapp/bower_components" />
+										<include name="webapp/bower_components/**" />
+										<include name="webapp/assets" />
+										<include name="webapp/assets/**" />
+									</preserveintarget>
+								</sync>
+							</target>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>4.sync libraries</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<sync todir="${output.dir}">
+									<fileset dir="src/main">
+										<include name="node_modules" />
+										<include name="node_modules/**" />
+										<include name="webapp/bower_components" />
+										<include name="webapp/bower_components/**" />
+									</fileset>
+									<preserveintarget>
+										<exclude name="node_modules" />
+										<exclude name="node_modules/**" />
+										<exclude name="webapp/bower_components" />
+										<exclude name="webapp/bower_components/**" />
+									</preserveintarget>
+								</sync>
+							</target>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>5.sync resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo>Copying application fonts</echo>
+								<sync todir="${output.dir}/webapp/assets">
+									<fileset dir="assets">
+										<include name="/fonts/actor-regular" />
+										<include name="/fonts/actor-regular/**" />
+										<include name="/fonts/icomoon" />
+										<include name="/fonts/icomoon/**" />
+									</fileset>
+								</sync>
+							</target>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<configuration>
+					<workingDirectory>${output.dir}</workingDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>7.launch</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>npm${command.extension}</executable>
+							<arguments>
+								<argument>run-script</argument>
+								<argument>grunt</argument>
+								<argument>${gruntTask}</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

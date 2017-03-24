@@ -1,0 +1,45 @@
+{
+  "name": "reas",
+  "version": "1.0.0",
+  "description": "A sample NodeJS application",
+  "main": "index.js",
+  "devDependencies": {
+    "autoprefixer": "6.7.7",
+    "bower": "1.8.0",
+    "connect-modrewrite": "0.10.1",
+    "erkalicious-grunt-watch": "1.0.0",
+    "grunt": "0.4.5",
+    "grunt-cli": "1.2.0",
+    "grunt-concurrent": "2.3.1",
+    "grunt-contrib-concat": "1.0.1",
+    "grunt-contrib-connect": "1.0.2",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "2.0.0",
+    "grunt-contrib-jshint": "1.1.0",
+    "grunt-contrib-less": "1.4.1",
+    "grunt-contrib-uglify": "2.2.0",
+    "grunt-jscs": "3.0.1",
+    "grunt-newer": "1.2.0",
+    "grunt-ng-annotate": "3.0.0",
+    "grunt-postcss": "0.8.0",
+    "grunt-usemin": "3.1.1",
+    "grunt-wiredep": "3.0.1",
+    "jshint-stylish": "2.2.1",
+    "load-grunt-tasks": "3.5.2",
+    "requirejs": "2.3.3",
+    "serve-static": "1.12.1",
+    "time-grunt": "1.4.0",
+    "typescript": "2.2.1",
+    "typings": "2.1.0"
+  },
+  "author": "RS",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "0.8.0"
+  },
+  "scripts": {
+    "bower": "bower",
+    "typings": "typings",
+    "grunt": "grunt"
+  }
+}

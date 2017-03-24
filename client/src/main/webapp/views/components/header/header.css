@@ -1,0 +1,7 @@
+.header {
+	font-family:icomoon;
+}
+
+.header::before {
+	content: '\e900';
+}
