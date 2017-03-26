@@ -1,14 +1,29 @@
 .header-containter {
-	.header {
-		font-size: 16px;
-		font-family: "REAS-Regular";
-		background-color: #000;
-		color: #fff;
+
+	.company-section {
+
 	}
 
-	.header:before {
-		content: '\e900';
-		font-family: "icomoon";
-		color: #fff;
+	.control-center {
+
+		.user-profile {
+			width: 36px;
+			height: 36px;
+			border-radius: 200px;
+			background: @app-primary-color;
+			opacity: 0.3;
+			transition: opacity @transition-defaults;
+			color: @app-primary-background;
+			font-family: @app-font;
+			font-size: 20px;
+			line-height: 36px;
+			cursor: pointer;
+			&:hover {
+				opacity: 0.5;
+			}
+			.initials {
+				margin: 0 auto;
+			}
+		}
 	}
 }

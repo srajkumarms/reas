@@ -6,5 +6,7 @@ app.directive("header", function headerDirective() {
 	}
 })
 .controller("HeaderController", function headerController($scope) {
-	$scope.header = "this is a sample header"
+	$scope.header = "this is a sample header";
+
+	$scope.userProfileInitial = "RS";
 });
