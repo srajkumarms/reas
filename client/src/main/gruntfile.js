@@ -26,9 +26,9 @@ module.exports = function(grunt) {
 			"options": {
 				"livereload": true
 			},
-            "html": {
-				"files": [rootDir + "/**/*.html"],
-				"tasks": ["wiredep", "less:compile", "postcss"]
+            "index": {
+				"files": [rootDir + "/views/index.html"],
+				"tasks":  ["wiredep"] // ["wiredep", "less:compile", "postcss"]
             },
             "css": {
                 "files": [
@@ -38,12 +38,12 @@ module.exports = function(grunt) {
 					"!" + rootDir + "**/node_modules/**/*.less",
 					"!" + rootDir + "**/assets/**/*.less"
 				],
-                "tasks": ["less:compile", "postcss"]
+				"tasks": ["less:compile", "postcss"] // ["wiredep", "less:compile", "postcss"]
             },
-            // js: {
-            //     files: ['src/js/*.js'],
-            //     tasks: ['uglify:dev']
-            // }
+            "js": {
+                "files": [rootDir + "/views/**/*.js"],
+				"tasks": ["wiredep", "less:compile", "postcss"]
+            }
         },
         "concurrent": {
             "options": {
@@ -76,8 +76,58 @@ module.exports = function(grunt) {
 			"dist": {
 				"src": rootDir + "resources/styles/styles.css"
 			}
+		},
+		"lesshint": {
+			"options": {
+				"lesshintrc": true,
+				"reporter": {
+					"name": "less-reporter",
+					"report": function report(errors) {
+						errors.forEach(function lessErrorItertator(error) {
+							reportLessError(error);
+						});
+					}
+				}
+			},
+			"src": [rootDir + "/**/*.less"]
+		},
+		"eslint": {
+			"options": {
+				configFile: "./.eslintrc"
+			},
+			"target": [
+				rootDir + "/views/**/*.js",
+				"!" + rootDir + "**/bower_components/**/*.js",
+				"!" + rootDir + "**/node_modules/**/*.js"
+			]
 		}
     });
+
+	function reportLessError(error) {
+		grunt.log.error("---------------------------------------------------------");
+		grunt.log.error(formatLessError(error, "column"));
+		grunt.log.error(formatLessError(error, "file"));
+		grunt.log.error(formatLessError(error, "fullPath"));
+		grunt.log.error(formatLessError(error, "line"));
+		grunt.log.error(formatLessError(error, "linter"));
+		grunt.log.error(formatLessError(error, "message"));
+		grunt.log.error(formatLessError(error, "severity"));
+		grunt.log.error(formatLessError(error, "source"));
+		grunt.log.error("---------------------------------------------------------");
+	}
+
+	function formatLessError(error, property) {
+		return property + ": " + error[property];
+	}
+
+	function allCompileTasks() {
+		return ["wiredep", "less:compile", "postcss"];
+	}
+
+	grunt.registerTask("compile", "Lint CSS, JS, TS before launch or relaod", [
+		"lesshint",
+		"eslint"
+	]);
 
     grunt.registerTask("launch", "Launch the server and realod changes", [
         "less:compile",
